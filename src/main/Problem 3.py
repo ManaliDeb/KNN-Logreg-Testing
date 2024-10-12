@@ -1,6 +1,7 @@
 import numpy as np
 from collections import Counter
 
+
 class KNNClassifier:
     def __init__(self, k=3):
         self.k = k
@@ -40,9 +41,13 @@ if __name__ == "__main__":
                     'Learning_Disabilities', 'Parental_Education_Level', 'Gender']
     df = pd.get_dummies(df, columns=category_col, drop_first=True)
 
+    remaining_category_col = ['Motivation_Level', 'Family_Income', 'Teacher_Quality', 'Distance_from_Home']
+    df = pd.get_dummies(df, columns=remaining_category_col, drop_first=True)
+
     # prep features and target
-    X = df.drop('Exam_Score', axis=1).values
-    y = df['Exam_Score'].values
+    df['Exam_Score_Binary'] = df['Exam_Score'].apply(lambda x: 1 if x >= 75 else 0)
+    X = df.drop(['Exam_Score', 'Exam_Score_Binary'], axis=1).values
+    y = df['Exam_Score_Binary'].values
 
     # normalize features
     scaler = StandardScaler()
@@ -51,3 +56,21 @@ if __name__ == "__main__":
     # split data
     X_train, X_temp, y_train, y_temp = train_test_split(X_scaled, y, test_size=0.30, random_state=42)
     X_dev, X_test, y_dev, y_test = train_test_split(X_temp, y_temp, test_size=0.50, random_state=42)
+
+    # tune k value
+    best_k = 1
+    best_accuracy = 0
+
+    for k in range(1, 11):  # testing k values from 1 to 10
+        knn = KNNClassifier(k=k)
+        knn.fit(X_train, y_train)
+        y_dev_pred = knn.predict(X_dev)
+        accuracy = accuracy_score(y_dev, y_dev_pred)
+
+        print(f"K={k}, Dev Set Accuracy: {accuracy:.4f}")
+
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            best_k = k
+
+    print(f"Best K: {best_k}, Best Accuracy: {best_accuracy:.4f}")
