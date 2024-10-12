@@ -75,6 +75,7 @@ if __name__ == "__main__":
 
     print(f"Best K: {best_k}, Best Accuracy: {best_accuracy:.4f}")
 
+    # problem 5
     # evaluate on test set using the best k
     best_knn = KNNClassifier(k=best_k)
     best_knn.fit(X_train, y_train)
