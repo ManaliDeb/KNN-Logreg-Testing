@@ -34,7 +34,7 @@ X_dev, X_test, y_dev, y_test = train_test_split(X_temp, y_temp, test_size=0.50, 
 # hyperparameter tuning
 param_grid = {
     'C': [0.01, 0.1, 1, 10, 100],
-    'solver': ['liblinear', 'saga'],  # Choose solvers that support both penalties
+    'solver': ['liblinear', 'saga'],  # choose solvers that support both penalties
     'penalty': ['l1', 'l2']
 }
 
