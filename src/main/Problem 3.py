@@ -74,3 +74,13 @@ if __name__ == "__main__":
             best_k = k
 
     print(f"Best K: {best_k}, Best Accuracy: {best_accuracy:.4f}")
+
+    # evaluate on test set using the best k
+    best_knn = KNNClassifier(k=best_k)
+    best_knn.fit(X_train, y_train)
+    y_test_pred = best_knn.predict(X_test)
+
+    # evaluation metrics on test set
+    test_accuracy = accuracy_score(y_test, y_test_pred)
+
+    print(f"Test Set Accuracy with Best K ({best_k}): {test_accuracy:.4f}")

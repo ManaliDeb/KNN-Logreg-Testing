@@ -56,3 +56,12 @@ f1 = f1_score(y_dev, y_dev_pred, average='weighted')
 print(f"Dev Set Accuracy: {accuracy}")
 print(f"F1 Score: {f1}")
 print(f"Best Parameters: {grid_search.best_params_}")
+
+# problem 5
+# evaluate on test set
+y_test_pred = best_model.predict(X_test)
+test_accuracy = accuracy_score(y_test, y_test_pred)
+test_f1 = f1_score(y_test, y_test_pred, average='weighted')
+
+print(f"Test Set Accuracy: {test_accuracy:.4f}")
+print(f"Test Set F1 Score: {test_f1:.4f}")
